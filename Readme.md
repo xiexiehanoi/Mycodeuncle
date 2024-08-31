@@ -43,7 +43,7 @@ sed -i '' "s/\${{ github.repository_owner }}/$CURRENT_USER/g" .github/workflows/
 sed -i '' "s/n8ntest/$REPO_NAME/g" .github/workflows/code-review.yml
 
 echo "Setup complete! Please add your HUGGINGFACE_API_KEY and MODEL_NAME to your repository secrets."
-
+```
 ### 6. 문제 해결 (Troubleshooting)
 
 - **API Key 오류**: Hugging Face API Key가 올바르지 않거나 만료된 경우, 새로운 키를 생성하여 다시 설정해야 합니다.
