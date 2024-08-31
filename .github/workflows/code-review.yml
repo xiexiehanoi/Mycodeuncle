@@ -32,15 +32,24 @@ jobs:
 
     - name: Create comment
       uses: actions/github-script@v6
-      if: github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request' || github.event_name == 'push'
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           const fs = require('fs')
           const reviewOutput = fs.readFileSync('review_output.txt', 'utf8')
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.name,
-            body: reviewOutput
-          })
+          if (github.event_name === 'pull_request') {
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              body: reviewOutput
+            })
+          } else if (github.event_name === 'push') {
+            github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              commit_sha: context.sha,
+              body: reviewOutput
+            })
+          }
